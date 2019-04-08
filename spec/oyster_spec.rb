@@ -40,20 +40,4 @@ describe Oyster do
       expect(oyster).not_to be_in_journey
     end
   end
-
-  # context '#in_journey?' do
-  #   it { expect(subject.in_journey?).to eql false }
-  # end
-  # context '#touch_in' do
-  #   oyster = Oyster.new
-  #   oyster.touch_in
-  #   it { expect(oyster.in_journey?).to eql true }
-  # end
-  # context '#touch_in' do
-  #   oyster = Oyster.new
-  #   oyster.touch_in
-  #   oyster.touch_out
-  #   it { expect(oyster.in_journey?).to eql false }
-  # end
-
 end
