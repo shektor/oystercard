@@ -25,4 +25,35 @@ describe Oyster do
       expect { oyster.deduct 5 }.to change { oyster.balance }.by -5
     end
   end
+
+  context 'travelling' do
+    oyster = Oyster.new
+    it '#in_journey' do
+      expect(oyster).not_to be_in_journey
+    end
+    it '#touch_in' do
+      oyster.touch_in
+      expect(oyster).to be_in_journey
+    end
+    it '#touch_out' do
+      oyster.touch_out
+      expect(oyster).not_to be_in_journey
+    end
+  end
+
+  # context '#in_journey?' do
+  #   it { expect(subject.in_journey?).to eql false }
+  # end
+  # context '#touch_in' do
+  #   oyster = Oyster.new
+  #   oyster.touch_in
+  #   it { expect(oyster.in_journey?).to eql true }
+  # end
+  # context '#touch_in' do
+  #   oyster = Oyster.new
+  #   oyster.touch_in
+  #   oyster.touch_out
+  #   it { expect(oyster.in_journey?).to eql false }
+  # end
+
 end
