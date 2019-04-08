@@ -13,4 +13,8 @@ class Oyster
     @balance += money
   end
 
+  def deduct(money)
+    @balance -= money 
+  end
+
 end

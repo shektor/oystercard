@@ -12,8 +12,17 @@ describe Oyster do
   end
   context 'max balance exceeded' do
     it 'raises error' do
-      subject.top_up(90)
-      expect { expect(subject.top_up(1)) }.to raise_error("Balance will exceed £#{Oyster::MAX_BALANCE} maximum")
+      maximum_balance = Oyster::MAX_BALANCE
+      subject.top_up(maximum_balance)
+      expect { expect(subject.top_up(1)) }.to raise_error("Balance will exceed £#{maximum_balance} maximum")
+    end
+  end
+
+  context '#deduct' do
+    it 'deducts money' do
+      oyster = Oyster.new
+      oyster.top_up(10)
+      expect { oyster.deduct 5 }.to change { oyster.balance }.by -5
     end
   end
 end
