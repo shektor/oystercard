@@ -1,6 +1,6 @@
 class Oyster
 
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :journey_list
 
   MAX_BALANCE = 90
   MIN_FARE = 1
@@ -8,6 +8,7 @@ class Oyster
   def initialize
     @balance = 0
     @in_use = false
+    @journey_list = []
   end
 
   def top_up(money)
@@ -30,8 +31,9 @@ class Oyster
     "Touched in"
   end
 
-  def touch_out
+  def touch_out(station)
     deduct(MIN_FARE)
+    journey_list << {entry: entry_station, exit: station}
     @entry_station = nil
     @in_use = false
     "Touched out"
