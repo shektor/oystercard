@@ -1,6 +1,8 @@
 require 'oyster'
 
 describe Oyster do
+  let(:station) { double :station }
+
   context '#initialize' do
     it { expect(subject).to have_attributes(balance: 0) }
   end
@@ -33,7 +35,7 @@ describe Oyster do
       expect(oyster).not_to be_in_journey
     end
     it '#touch_in' do
-      oyster.touch_in
+      oyster.touch_in(station)
       expect(oyster).to be_in_journey
     end
     it '#touch_out' do
@@ -45,14 +47,20 @@ describe Oyster do
   context 'touch_in' do
     message = 'lower than minumin amount'
     it 'raise an error when touch in with new card' do
-      expect { subject.touch_in }.to raise_error(message)
+      expect { subject.touch_in(station) }.to raise_error(message)
     end
 
     it 'raise an error when the balance is lower than minimum when touch in' do
         subject.top_up(described_class::MIN_FARE)
-        subject.touch_in
+        subject.touch_in(station)
         subject.touch_out
-      expect { subject.touch_in }.to raise_error(message)
+      expect { subject.touch_in(station) }.to raise_error(message)
+    end
+
+    it 'to store the entry station' do
+      subject.top_up(described_class::MIN_FARE)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
   end
 
@@ -60,6 +68,13 @@ describe Oyster do
     it 'deducts the minimum fare' do
       subject.top_up(5)
       expect { subject.touch_out }.to change { subject.balance }.by(-described_class::MIN_FARE)
+    end
+
+    it 'to forget the entry station' do
+      subject.top_up(described_class::MIN_FARE)
+      subject.touch_in(station)
+      subject.touch_out
+      expect(subject.entry_station).to eq nil
     end
   end
 end
