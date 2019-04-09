@@ -18,17 +18,17 @@ describe Oyster do
     end
   end
 
-  context '#deduct' do
-    it 'deducts money' do
-      oyster = Oyster.new
-      oyster.top_up(10)
-      expect { oyster.deduct 5 }.to change { oyster.balance }.by(-5)
-    end
-  end
+  # context '#deduct' do
+  #   it 'deducts money' do
+  #     oyster = Oyster.new
+  #     oyster.top_up(10)
+  #     expect { oyster.deduct 5 }.to change { oyster.balance }.by(-5)
+  #   end
+  # end
 
   context 'travelling' do
     oyster = Oyster.new
-    oyster.top_up(described_class::MIN_BALANCE)
+    oyster.top_up(described_class::MIN_FARE)
     it '#in_journey' do
       expect(oyster).not_to be_in_journey
     end
@@ -49,9 +49,17 @@ describe Oyster do
     end
 
     it 'raise an error when the balance is lower than minimum when touch in' do
-        subject.top_up(10)
-        subject.deduct(10)
+        subject.top_up(described_class::MIN_FARE)
+        subject.touch_in
+        subject.touch_out
       expect { subject.touch_in }.to raise_error(message)
+    end
+  end
+
+  context '#touch_out' do
+    it 'deducts the minimum fare' do
+      subject.top_up(5)
+      expect { subject.touch_out }.to change { subject.balance }.by(-described_class::MIN_FARE)
     end
   end
 end
