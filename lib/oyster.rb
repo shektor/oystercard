@@ -2,6 +2,7 @@ class Oyster
 
   attr_reader :balance
   MAX_BALANCE = 90
+  MIN_BALANCE = 1
 
   def initialize
     @balance = 0
@@ -23,6 +24,7 @@ class Oyster
   end
 
   def touch_in
+    raise "lower than minumin amount" if balance < MIN_BALANCE
     @in_use = true
     "Touched in"
   end
